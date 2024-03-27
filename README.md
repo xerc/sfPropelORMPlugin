@@ -1,121 +1,43 @@
 sfPropelORMPlugin
 =================
 
-[![Build Status](https://secure.travis-ci.org/propelorm/sfPropelORMPlugin.png?branch=master)](http://travis-ci.org/propelorm/sfPropelORMPlugin)
-
 Replaces symfony's core Propel plugin by the latest version of Propel, in branch 1.6.
 
 ## Installation
-
-### The Composer way
 
 Add the require to your composer.json. It's oddly named but like this Composer's symfony1 installer camelcases it correctly.
 Composer will install it into your project's plugins directory automatically, and add the requirements.
 
     {
         "config": {
-            "vendor-dir": "lib/vendor"
+            "vendor-dir": "vendor"
         },
         "require": {
-            "propel/sf-propel-o-r-m-plugin": "dev-master"
+            "friendsofsymfony1/sf-propel-o-r-m-plugin": "dev-master"
         }
     }
 
 Of course, don't forget to add Composer's autoloader to your ProjectConfiguration:
 
 ``` php
-// config/ProjectConfiguration.class.php
-
-require __DIR__ .'/../lib/vendor/autoload.php';
-
-require_once dirname(__FILE__) .'/../lib/vendor/symfony/lib/autoload/sfCoreAutoload.class.php';
-sfCoreAutoload::register();
+<?php # config/ProjectConfiguration.class.php
+require __DIR__ .'/../vendor/autoload.php';
 
 class ProjectConfiguration extends sfProjectConfiguration
 {
     public function setup()
     {
-        $this->enablePlugins(array(
+        $this->enablePlugins(
+        [
             'sfPropelORMPlugin',
             ...
-        ));
+        ]);
 
-        // mandatory because of the Composer vendor directory naming scheme
-        sfConfig::set('sf_phing_path', sfConfig::get('sf_lib_dir') .'/vendor/phing/phing');
-        sfConfig::set('sf_propel_path', sfConfig::get('sf_lib_dir') .'/vendor/propel/propel1');
+        // might be necessary because of the Composer vendor directory naming scheme
+        #sfConfig::set('sf_phing_path', sfConfig::get('sf_lib_dir') .'/vendor/phing/phing');
+        #sfConfig::set('sf_propel_path', sfConfig::get('sf_lib_dir') .'/vendor/propeller-orm/propeller-orm');
     }
 }
-```
-
-
-### The Git way
-
-Clone the plugin from Github:
-
-    git clone https://github.com/propelorm/sfPropelORMPlugin.git plugins/sfPropelORMPlugin
-    cd plugins/sfPropelORMPlugin
-    git submodule update --init
-
-If you use Git as a VCS for your project, it should be better to add the plugin as a submodule:
-
-    git submodule add https://github.com/propelorm/sfPropelORMPlugin.git plugins/sfPropelORMPlugin
-    git submodule update --init --recursive
-
-As both Phing and Propel libraries are bundled with the plugin, you have to initialize submodules for the plugin.
-
-### The SVN way
-
-Install the plugin via the subversion repository:
-
-    svn checkout https://github.com/propelorm/sfPropelORMPlugin/trunk plugins/sfPropelORMPlugin
-
-Install `Phing` and `Propel`:
-
-    svn checkout http://phing.mirror.svn.symfony-project.com/tags/2.3.3/classes/phing lib/vendor/phing
-    svn checkout https://github.com/propelorm/Propel/tags/1.6.5 lib/vendor/propel
-
-### Final step
-
-Disable the core Propel plugin and enable the `sfPropelORMPlugin` instead.  Also, change the location for
-the Propel and Phing libs.
-
-``` php
-// config/ProjectConfiguration.class.php
-
-class ProjectConfiguration extends sfProjectConfiguration
-{
-  public function setup()
-  {
-    //setup the location for our phing and propel libs
-    sfConfig::set('sf_phing_path', sfConfig::get('sf_root_dir').'/plugins/sfPropelORMPlugin/lib/vendor/phing/');
-    sfConfig::set('sf_propel_path', sfConfig::get('sf_root_dir').'/plugins/sfPropelORMPlugin/lib/vendor/propel/');
-    sfConfig::set('sf_propel_generator_path', sfConfig::get('sf_root_dir').'/plugins/sfPropelORMPlugin/lib/vendor/propel/generator/lib/');
-
-    $this->enablePlugins('sfPropelORMPlugin');
-  }
-}
-```
-
-**Optional:** update references to the `propel` and `phing` folders in the test project.
-
-``` php
-// plugins/sfPropelORMPlugin/test/functional/fixtures/config/ProjectConfiguration.class.php
-
-class ProjectConfiguration extends sfProjectConfiguration
-{
-  public function setup()
-  {
-    $this->enablePlugins(array('sfPropelORMPlugin'));
-    $this->setPluginPath('sfPropelORMPlugin', realpath(dirname(__FILE__) . '/../../../..'));
-
-    // SVN way
-    //sfConfig::set('sf_propel_path', SF_DIR.'/../lib/vendor/propel');
-    //sfConfig::set('sf_phing_path', SF_DIR.'/../lib/vendor/phing');
-
-    // Git way
-    sfConfig::set('sf_propel_path', realpath(dirname(__FILE__) . '/../../../../lib/vendor/propel'));
-    sfConfig::set('sf_phing_path', realpath(dirname(__FILE__) . '/../../../../lib/vendor/phing'));
-  }
 ```
 
 Right after the installation of the plugin, you should update plugin assets:

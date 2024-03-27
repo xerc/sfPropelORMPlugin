@@ -24,19 +24,18 @@ class sfPropelORMPluginConfiguration extends sfPluginConfiguration
 
     if (false === sfConfig::get('sf_phing_path', false))
     {
-      sfConfig::set('sf_phing_path', realpath(dirname(__FILE__).'/../lib/vendor/phing'));
+      sfConfig::set('sf_phing_path', sfConfig::get('sf_root_dir').'/vendor/phing/phing');
     }
 
     if (false === sfConfig::get('sf_propel_path', false))
     {
-      sfConfig::set('sf_propel_path', realpath(dirname(__FILE__).'/../lib/vendor/propel'));
+      sfConfig::set('sf_propel_path', sfConfig::get('sf_root_dir').'/vendor/propeller-orm/propeller-orm');
     }
 
     sfToolkit::addIncludePath(array(
       sfConfig::get('sf_root_dir'),
-      sfConfig::get('sf_phing_path'),
       sfConfig::get('sf_propel_path'),
-      sfConfig::get('sf_phing_path').'/../',
+      sfConfig::get('sf_phing_path'),
       sfConfig::get('sf_phing_path').'/classes',
     ));
 

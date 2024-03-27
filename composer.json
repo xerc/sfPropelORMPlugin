@@ -1,12 +1,12 @@
 {
-    "name": "propel/sf-propel-o-r-m-plugin",
+    "name": "friendsofsymfony1/sf-propel-o-r-m-plugin",
     "type": "symfony1-plugin",
     "description": "symfony 1.x plugin for Propel.",
     "keywords": ["symfony", "propel", "orm", "active record", "mapping", "database", "persistence"],
-    "homepage": "http://www.propelorm.org/",
+    "homepage": "https://www.propelorm.org",
     "require": {
         "composer/installers": "^v1.12.0",
-        "propel/propel1": "~1.6"
+        "propeller-orm/propeller-orm": "^3.0"
     },
     "extra": {
         "branch-alias": {
