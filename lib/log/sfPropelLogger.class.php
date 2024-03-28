@@ -16,7 +16,7 @@
  * @author     Dustin Whittle <dustin.whittle@symfony-project.com>
  * @version    SVN: $Id: sfPropelLogger.class.php 23810 2009-11-12 11:07:44Z Kris.Wallsmith $
  */
-class sfPropelLogger implements BasicLogger
+class sfPropelLogger implements Psr\Log\LoggerInterface
 {
   protected
     $dispatcher = null;
@@ -43,9 +43,19 @@ class sfPropelLogger implements BasicLogger
    *
    * @param mixed $message the message to log.
    */
-  public function alert($message)
+  public function alert($message, array $context = [])
   {
     $this->log($message, sfLogger::ALERT);
+  }
+
+  /**
+   * A convenience function for logging a emergency event.
+   *
+   * @param mixed $message the message to log.
+   */
+  public function emergency($message, array $context = [])
+  {
+    $this->log($message, sfLogger::EMERG);
   }
 
   /**
@@ -53,7 +63,7 @@ class sfPropelLogger implements BasicLogger
    *
    * @param mixed $message the message to log.
    */
-  public function crit($message)
+  public function critical($message, array $context = [])
   {
     $this->log($message, sfLogger::CRIT);
   }
@@ -63,7 +73,7 @@ class sfPropelLogger implements BasicLogger
    *
    * @param mixed $message the message to log.
    */
-  public function err($message)
+  public function error($message, array $context = [])
   {
     $this->log($message, sfLogger::ERR);
   }
@@ -73,7 +83,7 @@ class sfPropelLogger implements BasicLogger
    *
    * @param mixed $message the message to log.
    */
-  public function warning($message)
+  public function warning($message, array $context = [])
   {
     $this->log($message, sfLogger::WARNING);
   }
@@ -83,7 +93,7 @@ class sfPropelLogger implements BasicLogger
    *
    * @param mixed $message the message to log.
    */
-  public function notice($message)
+  public function notice($message, array $context = [])
   {
     $this->log($message, sfLogger::NOTICE);
   }
@@ -93,7 +103,7 @@ class sfPropelLogger implements BasicLogger
    *
    * @param mixed $message the message to log.
    */
-  public function info($message)
+  public function info($message, array $context = [])
   {
     $this->log($message, sfLogger::INFO);
   }
@@ -103,7 +113,7 @@ class sfPropelLogger implements BasicLogger
    *
    * @param mixed $message the message to log.
    */
-  public function debug($message)
+  public function debug($message, array $context = [])
   {
     $this->log($message, sfLogger::DEBUG);
   }
@@ -114,7 +124,7 @@ class sfPropelLogger implements BasicLogger
    * @param mixed $message the message to log.
    * @param int $severity The numeric severity. Defaults to null so that no assumptions are made about the logging backend.
    */
-  public function log($message, $severity = sfLogger::DEBUG)
+  public function log($severity = sfLogger::DEBUG, $message, array $context = [])
   {
     $this->dispatcher->notify(new sfEvent($this, 'application.log', array($message, 'priority' => $severity)));
   }
